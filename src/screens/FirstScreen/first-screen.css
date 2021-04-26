@@ -1,0 +1,54 @@
+.firstScreen-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.firstScreen-container--img-wrapper {
+    width: 50%;
+    height: 100%;
+}
+
+.firstScreen-container--img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left;
+}
+
+.firstScreen-container--banner {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 4em;
+}
+
+.firstScreen-container--banner h1 {
+    font-size: 5em;
+    margin: .5em 0;
+}
+
+.firstScreen-container--banner h4 {
+    font-size: 2em;
+    margin-bottom: .8em;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.firstScreen-container--btn-wrapper {
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.firstScreen-container--btn-wrapper .primary-btn {
+    margin-bottom: 1em;
+}
