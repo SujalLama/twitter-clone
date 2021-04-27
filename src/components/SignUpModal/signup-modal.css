@@ -53,6 +53,10 @@
     position: relative;
 }
 
+.signup-form .email-error {
+    border: 1.5px solid red;
+}
+
 .signup-form .form-group label {
     position: absolute;
     top: 50%;
@@ -72,18 +76,21 @@
     font-size: 14px;
 }
 
-.signup-form .form-group label {
-    transform: translateY(-110%) scale(.8);
-    transition: all .2s ease-in;
-}
-
 .signup-form .form-group:focus-within {
     border: 2px solid var(--primary-color);
 }
 
-.signup-form .form-group input:focus + .signup-form .form-group label {
+.signup-form .email-error:focus-within {
+    border: 2px solid red;
+}
+
+.form-group input:focus + label {
     transform: translateY(-110%) scale(.8);
     transition: all .2s ease-in;
+}
+
+#active {
+    transform: translateY(-110%) scale(.8);
 }
 
 .change-button {
@@ -118,3 +125,8 @@
 .option-container select:focus {
     border: 3px solid var(--primary-color);
 }
+
+.option-container select:active {
+    outline: none;
+}
+
