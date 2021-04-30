@@ -12,15 +12,21 @@ const SignUpModal = () => {
 
     // validation and showing error through regex
     useEffect(() => {
+        
         if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailfield)) {
             setEmailError(false);
-        } else {
+        } else if(!emailfield) setEmailError(false)
+        else
+        {
             setEmailError(true);
         }
 
+        
+
         if(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/.test(phonefield)) {
             setPhoneError(false);
-        } else {
+        }  else if(!phonefield) setPhoneError(false)
+        else {
             setPhoneError(true);
         }
     }, [emailfield, phonefield])
@@ -29,7 +35,7 @@ const SignUpModal = () => {
         <div className="signup-container">
             <div className="signup-inner-container">
             <div className="signup-header">
-             <img src="/twitter.svg" />
+             <img src="/img/twitter.svg" />
              <button className="primary-btn size" disabled>Next</button>
              </div>
              <form className="signup-form" onSubmit={(e) => e.preventDefault()}>
