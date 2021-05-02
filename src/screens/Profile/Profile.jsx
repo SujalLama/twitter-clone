@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import EditProfile from '../../components/EditProfile/EditProfile';
 import DashboardLayout from '../../layout/DashboardLayout/DashboardLayout'
 
 import './profile.css'
@@ -6,6 +7,7 @@ import './profile.css'
 const Profile = () => {
     const [tweetActive, setTweetActive] = useState(true);
     const [likesActive, setLikesActive] = useState(false);
+    const [editActive, setEditActive] = useState(false);
 
     function tweetFunc () {
         setTweetActive(true);
@@ -18,6 +20,10 @@ const Profile = () => {
     }
 
     return (
+        <div className="profile-wrapper">
+        {editActive && <div className="edit-form-wrapper">
+            <div><EditProfile setEditActive={setEditActive}/></div>
+            </div>}
         <DashboardLayout name="Sujal" back="back">
            <div className="profile-section">
                <div>
@@ -28,7 +34,7 @@ const Profile = () => {
                    <div className="profile-pic">
                        <img src="/img/author.jpg" />
                    </div>
-                   <button className="secondary-btn">Edit profile</button>
+                   <button className="secondary-btn" onClick={() => setEditActive(true)}>Edit profile</button>
                </div>
                </div>
                <div className="profile-desc">
@@ -59,6 +65,7 @@ const Profile = () => {
            </ul>
            </div>
         </DashboardLayout>
+        </div>
     )
 }
 
