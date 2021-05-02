@@ -1,0 +1,133 @@
+.profile-section {
+    width: 100%;
+    /* position: relative; */
+}
+
+.profile-section > div {
+    width: 100%;
+    position: relative;
+}
+
+.cover-photo {
+    width: 100%;
+    height: 250px;
+}
+
+.cover-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.profile-edit {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 2em;
+    position: absolute;
+    width: 100%;
+    bottom: -25%;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; 
+    background: #fff;
+    padding: 4px;
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.profile-edit button {
+    width: 120px;
+    height: 40px;
+    font-weight: bolder;
+    font-size: 1em;
+}
+
+.profile-desc {
+    padding: 0 2em;
+    margin-top: 4.5em;
+}
+
+.profile-desc h4 {
+    font-size: 1.4em;
+}
+
+.profile-desc h6 {
+    font-weight: normal;
+    font-size: 1em;
+    color: grey;
+}
+
+.profile-details {
+    margin: .6em 0;
+    color: grey;
+    display: flex;
+    align-items: center;
+}
+
+.profile-details > div {
+    margin-right:  1.5em;
+}
+
+.profile-details div  i {
+    margin-right: 4px;
+}
+
+.profile-status {
+     display: flex;
+    align-items: center;
+}
+
+.profile-status div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.5em;
+    color: grey;
+}
+
+.profile-status div h5 {
+    font-size: 16px;
+    margin-right: 6px;
+    color: #000;
+} 
+
+/* main section navigation */
+.main-nav-container {
+    margin-top: 1.5em;
+    width: 100%;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.main-nav li {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.main-nav li:hover {
+    background: rgb(220, 235, 255);
+}
+
+.main-nav li.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}

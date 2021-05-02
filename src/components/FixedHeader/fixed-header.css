@@ -1,0 +1,27 @@
+.fixed-header-bar {
+    font-size: 1.4em;
+    font-weight: bolder;
+    padding: .6em 1.5em;
+    border-bottom: 1px solid var(--border-color);
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.back {
+    margin-right: .8em;
+    font-size: 14px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.back:hover {
+    background-color: var(--border-color);
+}
