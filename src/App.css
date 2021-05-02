@@ -2,6 +2,9 @@
   --primary-color: #00acee;
   --primary-light-color: #d9f2fc;
   --primary-dark-color: #0091ca;
+  --darker-grey: #9b9b9b;
+  --border-color: #e9e9e9;
+  --background-color: #e8e8e8;
 }
 
 .primary-btn {

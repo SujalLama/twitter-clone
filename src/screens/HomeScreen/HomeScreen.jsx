@@ -1,8 +1,21 @@
-import React from 'react'
+import React, {useState} from 'react'
+import TweetForm from '../../components/TweetForm/TweetForm'
 import './home-screen.css'
 
 const HomeScreen = () => {
+    const [tweetActive, setTweetActive] = useState(false);
+
     return (
+        <>
+        {tweetActive && <div className="twitter-modal-container">
+                <div className="twitter-modal-wrapper">
+                    <i className="fas fa-times" onClick={() => setTweetActive(false)}></i>
+                    <div>
+                    <TweetForm />
+                    </div>
+                    </div>
+                </div>}
+
         <div className="home-container">
             {/* navbar */}
             <div className="nav-bar-container">
@@ -13,7 +26,7 @@ const HomeScreen = () => {
                     <li className="nav-item"><i className="far fa-envelope"></i> <span>Messages</span></li>
                     <li className="nav-item"><i className="far fa-user"></i> <span>Profile</span></li>
                 </ul>
-                <button className="primary-btn">Tweet</button>
+                <button className="primary-btn" onClick={() => setTweetActive(true)}>Tweet</button>
                 <div className="logout-section">
                     <img src="/img/author.jpg" className="user-pic" alt="profile-pic"/>
                     <div className="user-detail">
@@ -26,6 +39,7 @@ const HomeScreen = () => {
             <main className="main-section">
                 <div className="fixed-header-bar">Home</div>
                 {/* Tweet creating form goes here */}
+                <div className="tweet-form-wrapper"><TweetForm /></div>
                 {/* latest tweets come here */}
                 <div className="latest-tweet-container">
                      <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
@@ -151,6 +165,7 @@ const HomeScreen = () => {
                 message-bar
             </div>
         </div>
+        </>
     )
 }
 
