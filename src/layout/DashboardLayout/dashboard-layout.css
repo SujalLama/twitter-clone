@@ -94,6 +94,10 @@
     margin-right: 1em;
 }
 
+.logout-wrapper {
+    position: relative;
+}
+
 .logout-section {
     display: flex;
     justify-content: space-between;
@@ -106,6 +110,13 @@
 
 .logout-section:hover {
     background: var(--background-color)
+}
+
+.logout-section.active {
+    cursor: default;
+}
+.logout-section.active:hover {
+    background: none;
 }
 
 .user-pic {

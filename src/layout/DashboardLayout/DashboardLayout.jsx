@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom';
 
 // components 
 import FixedHeader from '../../components/FixedHeader/FixedHeader';
+import Logout from '../../components/Logout/Logout';
 import SearchComponent from '../../components/SearchComponent/SearchComponent';
 import TweetForm from '../../components/TweetForm/TweetForm';
 
@@ -11,6 +12,7 @@ import './dashboard-layout.css';
 
 const DashboardLayout = ({children, name, back}) => {
     const [tweetActive, setTweetActive] = useState(false);
+    const [logoutActive, setLogoutActive] = useState(false);
     const history = useHistory();
     return (
          <>
@@ -34,13 +36,17 @@ const DashboardLayout = ({children, name, back}) => {
                     <li className="nav-item" onClick={() => history.push("/profile")}><i className="far fa-user"></i> <span>Profile</span></li>
                 </ul>
                 <button className="primary-btn" onClick={() => setTweetActive(true)}>Tweet</button>
-                <div className="logout-section">
+
+                <div className="logout-wrapper">
+                     {logoutActive && <Logout />}
+                <div className={logoutActive ? "logout-section active" : "logout-section"} onClick={() => setLogoutActive(!logoutActive)}>
                     <img src="/img/author.jpg" className="user-pic" alt="profile-pic"/>
                     <div className="user-detail">
                         <h4>Sujal</h4>
                         <p>username</p>
                     </div>
                     <i className="fas fa-ellipsis-h"></i>
+                </div>
                 </div>
             </div>
             <main className="main-section">

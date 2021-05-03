@@ -1,0 +1,31 @@
+.logout-container {
+    position: absolute;
+    top: -100%;
+    width: 100%;
+    padding: 1.5em;
+    border-radius: .8em;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    box-shadow: -2px 2px 10px var(--border-color);
+    cursor: pointer;
+}
+
+.logout-container::after{
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 8px;
+    background: #fff;
+    bottom: -8px;
+    border-bottom: 1px solid var(--border-color);
+    left: 50%;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.logout-container:hover {
+     background: var(--background-color)
+}
+
+.logout-container:hover::after {
+    background: var(--background-color)
+}
