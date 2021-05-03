@@ -6,6 +6,7 @@ import FirstScreen from './screens/FirstScreen/FirstScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 import Profile from './screens/Profile/Profile';
+import Notification from './screens/Notification/Notification';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" component={LoginScreen} />
         <Route path="/home" component={HomeScreen} />
         <Route path="/profile" component={Profile} />
+        <Route path="/notifications" component={Notification} />
       </Switch>
     </Router>
     </>
