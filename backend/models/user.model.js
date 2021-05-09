@@ -24,6 +24,20 @@ const UserSchema = new mongoose.Schema({
         minlength: 6,
         select: false
     },
+    profilePhoto: {
+        data: Buffer,
+        contentType: String
+    },
+    coverPhoto: {
+        data: Buffer,
+        contentType: String
+    },
+    bio: {
+        type: String,
+        minlength: 30,
+    },
+    followers: [{type:mongoose.Schema.ObjectId, ref: 'User'}],
+    following: [{type:mongoose.Schema.ObjectId, ref: 'User'}],
     resetPasswordToken: String,
     resetPasswordExpire: Date,
     created: {
