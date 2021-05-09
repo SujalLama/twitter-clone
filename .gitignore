@@ -3,6 +3,7 @@
 
 # env files
 /backend/config/config.env
+*.env
 # dependencies
 /node_modules
 /.pnp
