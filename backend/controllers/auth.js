@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
+const upload = require('../middleware/fileUpload');
 
 // @desc    Register user
 // @route   POST /api/v1/auth/register
@@ -199,12 +200,74 @@ exports.updatePassword = async (req, res, next) => {
     await user.save();
 
    sendTokenResponse(user, 200, res);
-   
+
     } catch(err) {
         res.status(400).json(err);
     }
     
 }
+
+exports.uploadProfilePic = async (req, res) => {
+  try {
+    // console.log(req.file);
+    // if (req.file == undefined) {
+    //   return res.status(400).send({ message: "Choose a file to upload" });
+    // }
+  
+    await upload(req, res);
+   await User.findByIdAndUpdate(req.user.id, {
+       profilePhoto: req.file.originalname
+   })
+
+    res.status(200).send({
+      message: "File uploaded successfully: " + req.file.originalname,
+    });
+
+  } catch (err) {
+    console.log(err);
+
+    if (err.code == "LIMIT_FILE_SIZE") {
+      return res.status(500).send({
+        message: "File size should be less than 5MB",
+      });
+    }
+
+    res.status(500).send({
+      message: `Error occured: ${err}`,
+    });
+  }
+};
+
+exports.uploadCoverPic = async (req, res) => {
+  try {
+    // console.log(req.file);
+    // if (req.file == undefined) {
+    //   return res.status(400).send({ message: "Choose a file to upload" });
+    // }
+  
+    await upload(req, res);
+   await User.findByIdAndUpdate(req.user.id, {
+       coverPhoto: req.file.originalname
+   })
+
+    res.status(200).send({
+      message: "File uploaded successfully: " + req.file.originalname,
+    });
+
+  } catch (err) {
+    console.log(err);
+
+    if (err.code == "LIMIT_FILE_SIZE") {
+      return res.status(500).send({
+        message: "File size should be less than 5MB",
+      });
+    }
+
+    res.status(500).send({
+      message: `Error occured: ${err}`,
+    });
+  }
+};
 
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
