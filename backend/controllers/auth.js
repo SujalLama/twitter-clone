@@ -159,6 +159,30 @@ exports.resetPassword = async (req, res, next) => {
     
 }
 
+// @desc    Update user details
+// @route   PUT /api/v1/auth/updatedetails
+// @access  Private
+exports.updateDetails = async (req, res, next) => {
+    try {
+        const fieldsToUpdate = {
+            username: req.body.username,
+            email: req.body.email
+        }
+
+    const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+        new: true,
+        runValidators: true
+    });
+
+    res.status(200).json({
+        success: true,
+        data: user
+    })
+    } catch(err) {
+        res.status(400).json(err);
+    }
+    
+}
 
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
