@@ -1,17 +1,58 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import TweetForm from '../../components/TweetForm/TweetForm'
 import DashboardLayout from '../../layout/DashboardLayout/DashboardLayout';
+import {useDispatch, useSelector} from 'react-redux';
+import {listPosts} from '../../actions/postActions';
 
 import './home-screen.css'
 
 const HomeScreen = () => {
+    const dispatch = useDispatch()
+    const postList = useSelector(state => state.postList)
+    const {loading, error, posts} = postList
+
+    useEffect(() => {
+        dispatch(listPosts());
+    }, [dispatch])
 
     return (
         <>
         <DashboardLayout name="Home">
                 <div className="tweet-form-wrapper"><TweetForm /></div>
                 {/* latest tweets come here */}
-                <div className="latest-tweet-container">
+                {loading ? <h2>loading ...</h2> : error ? <h3>{error}</h3> : (
+                    posts && posts.map( item => {
+                    return (<div className="latest-tweet-container">
+                     <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
+                       
+                     <div className="latest-tweet--header-content">
+                            <div>
+                            <h4>Jobs at Fresh Thyme</h4>
+                            <p>@FreshTymeJobs</p> 
+                            <span>{" . "}</span>
+                            <p>{item.created}</p>
+                            </div>
+                            <div className="tweet-content">
+                                {item.text}
+                            </div>
+                            <div className="tweet-photos">
+                                <img src={`http://localhost:5000/api/v1/files/${item.photo}`} className="tweet-photo" alt="tweet-photo"/>
+                            </div>
+                            <div className="tweet-footer">
+                                <div className="tweet-comment">
+                                <i className="far fa-comment-alt" /><span>3</span>
+                                </div>
+                                <div className="tweet-love">
+                                <i className="far fa-heart" /><span>16</span>
+                                </div>
+                            </div>
+                    </div>
+                    <i className="fas fa-ellipsis-h setting" ></i>
+                </div>)
+                    })
+                )}
+                
+                {/* <div className="latest-tweet-container">
                      <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
                        
                      <div className="latest-tweet--header-content">
@@ -64,34 +105,7 @@ const HomeScreen = () => {
                             </div>
                     </div>
                     <i className="fas fa-ellipsis-h setting" ></i>
-                </div>
-                <div className="latest-tweet-container">
-                     <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
-                       
-                     <div className="latest-tweet--header-content">
-                            <div>
-                            <h4>Jobs at Fresh Thyme</h4>
-                            <p>@FreshTymeJobs</p> 
-                            <span>{" . "}</span>
-                            <p>1hr</p>
-                            </div>
-                            <div className="tweet-content">
-                                This job is amzing and I love it.
-                            </div>
-                            <div className="tweet-photos">
-                                <img src="/img/space.jpg" className="tweet-photo" alt="tweet-photo"/>
-                            </div>
-                            <div className="tweet-footer">
-                                <div className="tweet-comment">
-                                <i className="far fa-comment-alt" /><span>3</span>
-                                </div>
-                                <div className="tweet-love">
-                                <i className="far fa-heart" /><span>16</span>
-                                </div>
-                            </div>
-                    </div>
-                    <i className="fas fa-ellipsis-h setting" ></i>
-                </div>
+                </div> */}
                 </DashboardLayout>
         </>
     )

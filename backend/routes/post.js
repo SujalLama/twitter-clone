@@ -4,7 +4,7 @@ const {protect} = require('../middleware/auth');
 
 router
     .route('/')
-    .get(protect, getAllPosts)
+    .get(getAllPosts)
     .post(protect, createPost);
 
 router
