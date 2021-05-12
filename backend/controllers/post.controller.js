@@ -1,4 +1,5 @@
 const Post = require('../models/post.model');
+const User = require('../models/user.model');
 const upload = require("../middleware/fileUpload");
 
 // @desc    Get posts by all user
@@ -7,8 +8,9 @@ const upload = require("../middleware/fileUpload");
 
 exports.getAllPosts = async (req, res, next) => {
     try {
-    const posts = await Post.find();
+    const posts = await Post.find().populate('postedBy');
     const total = posts.length;
+
     res.status(200).json({
         success: true,
         total,

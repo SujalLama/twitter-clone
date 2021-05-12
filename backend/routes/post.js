@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {getAllPosts, getSinglePost, deletePost, createPost, updatePost, postPhotoUpload} = require('../controllers/post.controller');
+const {getAllPosts, getSinglePost, deletePost, createPost, updatePost, postPhotoUpload, likePost} = require('../controllers/post.controller');
 const {protect} = require('../middleware/auth');
 
 router
@@ -13,7 +13,7 @@ router
 
 router
     .route('/:id')
-    .get(protect, getSinglePost)
+    .get(getSinglePost)
     .put(protect, updatePost)
     .delete(protect, deletePost);
 

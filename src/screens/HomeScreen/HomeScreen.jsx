@@ -3,6 +3,7 @@ import TweetForm from '../../components/TweetForm/TweetForm'
 import DashboardLayout from '../../layout/DashboardLayout/DashboardLayout';
 import {useDispatch, useSelector} from 'react-redux';
 import {listPosts} from '../../actions/postActions';
+import moment from 'moment';
 
 import './home-screen.css'
 
@@ -23,14 +24,13 @@ const HomeScreen = () => {
                 {loading ? <h2>loading ...</h2> : error ? <h3>{error}</h3> : (
                     posts && posts.map( item => {
                     return (<div className="latest-tweet-container">
-                     <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
-                       
+                     <img src={`http://localhost:5000/api/v1/files/${item.postedBy.profilePhoto}`} className="user-pic" alt="posting author"/>
                      <div className="latest-tweet--header-content">
                             <div>
-                            <h4>Jobs at Fresh Thyme</h4>
-                            <p>@FreshTymeJobs</p> 
+                            <h4>{item.postedBy.username}</h4>
+                            <p>@{item.postedBy.username}</p> 
                             <span>{" . "}</span>
-                            <p>{item.created}</p>
+                            <p>{moment(item.created).fromNow()}</p>
                             </div>
                             <div className="tweet-content">
                                 {item.text}
@@ -40,10 +40,10 @@ const HomeScreen = () => {
                             </div>
                             <div className="tweet-footer">
                                 <div className="tweet-comment">
-                                <i className="far fa-comment-alt" /><span>3</span>
+                                <i className="far fa-comment-alt" /><span>{item.comments.length}</span>
                                 </div>
                                 <div className="tweet-love">
-                                <i className="far fa-heart" /><span>16</span>
+                                <i className="far fa-heart" /><span>{item.likes.length}</span>
                                 </div>
                             </div>
                     </div>
@@ -51,61 +51,6 @@ const HomeScreen = () => {
                 </div>)
                     })
                 )}
-                
-                {/* <div className="latest-tweet-container">
-                     <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
-                       
-                     <div className="latest-tweet--header-content">
-                            <div>
-                            <h4>Jobs at Fresh Thyme</h4>
-                            <p>@FreshTymeJobs</p> 
-                            <span>{" . "}</span>
-                            <p>1hr</p>
-                            </div>
-                            <div className="tweet-content">
-                                This job is amzing and I love it.
-                            </div>
-                            <div className="tweet-photos">
-                                <img src="/img/space.jpg" className="tweet-photo" alt="tweet-photo"/>
-                            </div>
-                            <div className="tweet-footer">
-                                <div className="tweet-comment">
-                                <i className="far fa-comment-alt" /><span>3</span>
-                                </div>
-                                <div className="tweet-love">
-                                <i className="far fa-heart" /><span>16</span>
-                                </div>
-                            </div>
-                    </div>
-                    <i className="fas fa-ellipsis-h setting" ></i>
-                </div>
-                <div className="latest-tweet-container">
-                     <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
-                       
-                     <div className="latest-tweet--header-content">
-                            <div>
-                            <h4>Jobs at Fresh Thyme</h4>
-                            <p>@FreshTymeJobs</p> 
-                            <span>{" . "}</span>
-                            <p>1hr</p>
-                            </div>
-                            <div className="tweet-content">
-                                This job is amzing and I love it.
-                            </div>
-                            <div className="tweet-photos">
-                                <img src="/img/space.jpg" className="tweet-photo" alt="tweet-photo"/>
-                            </div>
-                            <div className="tweet-footer">
-                                <div className="tweet-comment">
-                                <i className="far fa-comment-alt" /><span>3</span>
-                                </div>
-                                <div className="tweet-love">
-                                <i className="far fa-heart" /><span>16</span>
-                                </div>
-                            </div>
-                    </div>
-                    <i className="fas fa-ellipsis-h setting" ></i>
-                </div> */}
                 </DashboardLayout>
         </>
     )
