@@ -21,10 +21,6 @@ let corsConfig = {
 
 app.use(cors(corsConfig));
 
-
-
-
-
 //connecting db
 connectDB();
 

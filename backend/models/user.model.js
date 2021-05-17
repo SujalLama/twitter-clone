@@ -6,8 +6,7 @@ const crypto = require('crypto');
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
-        trim: true,
-        required: [true, 'Name is required']
+        trim: true
     },
     email: {
         type: String,

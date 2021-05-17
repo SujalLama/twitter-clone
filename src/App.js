@@ -8,6 +8,8 @@ import HomeScreen from './screens/HomeScreen/HomeScreen';
 import Profile from './screens/Profile/Profile';
 import Notification from './screens/Notification/Notification';
 
+//Protect routes
+import PrivateRoute from './ProtectedRoute';
 
 function App() {
   return (
@@ -16,9 +18,15 @@ function App() {
       <Switch>
         <Route exact path="/" component={FirstScreen} />
         <Route path="/login" component={LoginScreen} />
-        <Route path="/home" component={HomeScreen} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/notifications" component={Notification} />
+        <PrivateRoute path="/home">
+            <HomeScreen />
+          </PrivateRoute>
+        <PrivateRoute path="/profile">
+          <Profile />
+          </PrivateRoute>
+        <PrivateRoute path="/notifications">
+          <Notification />
+          </PrivateRoute>
       </Switch>
     </Router>
     </>

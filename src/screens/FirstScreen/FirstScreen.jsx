@@ -1,11 +1,20 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 import './first-screen.css';
 import {useHistory} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 const FirstScreen = () => {
     const [modalActive, setModalActive] = useState(false);
     const history = useHistory();
+    const userLogin = useSelector(state => state.userLogin);
+    const {loading, error, userInfo} = userLogin;
+
+
+    useEffect(() => {
+        if(userInfo) history.push('/home');
+    }, [userInfo, history]);
+
     return (
         <div className="firstScreen-container">
             {modalActive && <SignUpModal />}

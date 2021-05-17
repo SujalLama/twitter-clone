@@ -4,7 +4,6 @@ import DashboardLayout from '../../layout/DashboardLayout/DashboardLayout';
 import {useDispatch, useSelector} from 'react-redux';
 import {listPosts} from '../../actions/postActions';
 import moment from 'moment';
-
 import './home-screen.css'
 
 const HomeScreen = () => {
@@ -24,7 +23,10 @@ const HomeScreen = () => {
                 {loading ? <h2>loading ...</h2> : error ? <h3>{error}</h3> : (
                     posts && posts.map( item => {
                     return (<div className="latest-tweet-container">
-                     <img src={`http://localhost:5000/api/v1/files/${item.postedBy.profilePhoto}`} className="user-pic" alt="posting author"/>
+                     <img src={item.postedBy
+                     ? `http://localhost:5000/api/v1/files/${item.postedBy.profilePhoto}`
+                    : "/img/user-placeholder.svg"
+                    } className="user-pic" alt="posting author"/>
                      <div className="latest-tweet--header-content">
                             <div>
                             <h4>{item.postedBy.username}</h4>
