@@ -10,6 +10,7 @@ import Notification from './screens/Notification/Notification';
 
 //Protect routes
 import PrivateRoute from './ProtectedRoute';
+import Page404 from './screens/Page404/Page404';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <PrivateRoute path="/notifications">
           <Notification />
           </PrivateRoute>
+        <Route component={Page404} />
       </Switch>
     </Router>
     </>
