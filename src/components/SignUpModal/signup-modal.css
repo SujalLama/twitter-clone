@@ -44,6 +44,13 @@
     margin-top: .8em;
 }
 
+.signup-form-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+}
+
 .signup-form .form-group {
     margin: 1.5em 0;
     width: 100%;

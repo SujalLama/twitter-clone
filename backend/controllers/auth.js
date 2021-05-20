@@ -9,13 +9,15 @@ const upload = require('../middleware/fileUpload');
 
 exports.register = async (req, res, next) => {
     try {
-        const {username, email, password} = req.body;
+        const {username, email, password, firstname, lastname} = req.body;
 
         //Create user
         const user = await User.create({
             username,
             email,
-            password
+            password,
+            firstname,
+            lastname
         })
 
         sendTokenResponse(user, 200, res);
