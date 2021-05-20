@@ -5,19 +5,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import {listPosts} from '../../actions/postActions';
 import moment from 'moment';
 import './home-screen.css'
+import { userProfileAction } from '../../actions/userActions';
+import { isCompositeComponentWithType } from 'react-dom/test-utils';
 
 const HomeScreen = () => {
     const dispatch = useDispatch()
     const postList = useSelector(state => state.postList)
-    const {loading, error, posts} = postList
+    const userData = useSelector(state => state.userProfile)
+    const {loading, error, posts} = postList;
+    const {userProfile} = userData;
 
     useEffect(() => {
+        dispatch(userProfileAction())
         dispatch(listPosts());
     }, [dispatch])
-
     return (
         <>
-        <DashboardLayout name="Home">
+        <DashboardLayout name="Home" userProfile={userProfile} >
                 <div className="tweet-form-wrapper"><TweetForm /></div>
                 {/* latest tweets come here */}
                 {loading ? <h2>loading ...</h2> : error ? <h3>{error}</h3> : (

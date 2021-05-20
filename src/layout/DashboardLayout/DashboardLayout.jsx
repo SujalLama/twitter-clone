@@ -10,7 +10,7 @@ import TweetForm from '../../components/TweetForm/TweetForm';
 // styling
 import './dashboard-layout.css';
 
-const DashboardLayout = ({children, name, back}) => {
+const DashboardLayout = ({children, name, back, userProfile}) => {
     const [tweetActive, setTweetActive] = useState(false);
     const [logoutActive, setLogoutActive] = useState(false);
     const history = useHistory();
@@ -40,12 +40,24 @@ const DashboardLayout = ({children, name, back}) => {
                 <div className="logout-wrapper">
                      {logoutActive && <Logout />}
                 <div className={logoutActive ? "logout-section active" : "logout-section"} onClick={() => setLogoutActive(!logoutActive)}>
-                    <img src="/img/author.jpg" className="user-pic" alt="profile-pic"/>
+                   {userProfile 
+                   ? <>
+                   <img src={userProfile.profilePhoto === undefined ? "/img/user-placeholder.svg" : `http://localhost:5000/api/v1/files/${userProfile.profilePhoto}`} className="user-pic" alt="profile-pic"/>
                     <div className="user-detail">
-                        <h4>Sujal</h4>
-                        <p>username</p>
+                        <h4>{userProfile.firstname === undefined ? "name" : userProfile.firstname}</h4>
+                        <p>@{userProfile.username === undefined ? "username" : userProfile.username}</p>
                     </div>
                     <i className="fas fa-ellipsis-h"></i>
+                    </>
+                    : <>
+                   <img src= "/img/user-placeholder.svg" className="user-pic" alt="profile-pic"/>
+                    <div className="user-detail">
+                        <h4>name</h4>
+                        <p>@username"</p>
+                    </div>
+                    <i className="fas fa-ellipsis-h"></i>
+                    </>
+                    }
                 </div>
                 </div>
             </div>
