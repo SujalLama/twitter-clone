@@ -11,6 +11,7 @@
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-dropzone": "^11.3.2",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -24,7 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon backend/server",
+    "server": "npm start --prefix backend",
     "dev": "concurrently \"npm run server\" \"npm start\""
   },
   "eslintConfig": {

@@ -1,19 +1,46 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {useHistory} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 
 // components 
 import FixedHeader from '../../components/FixedHeader/FixedHeader';
 import Logout from '../../components/Logout/Logout';
 import SearchComponent from '../../components/SearchComponent/SearchComponent';
 import TweetForm from '../../components/TweetForm/TweetForm';
+import { userProfileAction } from '../../actions/userActions';
 
 // styling
 import './dashboard-layout.css';
 
-const DashboardLayout = ({children, name, back, userProfile}) => {
+
+
+const DashboardLayout = ({children, name, back}) => {
     const [tweetActive, setTweetActive] = useState(false);
     const [logoutActive, setLogoutActive] = useState(false);
     const history = useHistory();
+
+    //redux data fetching
+    const userData = useSelector(state => state.userProfile)
+    const {loading, error, userProfile} = userData;
+  
+    // logout modal showing and not showing
+        const node = useRef()
+        const handleClick = (e) => {
+            if(node.current) {
+                if (node.current.contains(e.target)) {
+            return
+            }
+            }
+            setLogoutActive(false)
+        }
+
+        useEffect(() => {
+            document.addEventListener('click', handleClick)
+            return () => {
+            document.removeEventListener('click', handleClick)
+            }
+        }, [])
+
     return (
          <>
         {tweetActive && <div className="twitter-modal-container">
@@ -22,7 +49,7 @@ const DashboardLayout = ({children, name, back, userProfile}) => {
                     <div>
                     <TweetForm />
                     </div>
-                    </div>
+                </div>
                 </div>}
 
         <div className="home-container">
@@ -37,7 +64,7 @@ const DashboardLayout = ({children, name, back, userProfile}) => {
                 </ul>
                 <button className="primary-btn" onClick={() => setTweetActive(true)}>Tweet</button>
 
-                <div className="logout-wrapper">
+                <div className="logout-wrapper" ref={node}>
                      {logoutActive && <Logout />}
                 <div className={logoutActive ? "logout-section active" : "logout-section"} onClick={() => setLogoutActive(!logoutActive)}>
                    {userProfile 

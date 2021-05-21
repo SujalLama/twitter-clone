@@ -6,7 +6,6 @@ import {listPosts} from '../../actions/postActions';
 import moment from 'moment';
 import './home-screen.css'
 import { userProfileAction } from '../../actions/userActions';
-import { isCompositeComponentWithType } from 'react-dom/test-utils';
 
 const HomeScreen = () => {
     const dispatch = useDispatch()
@@ -16,13 +15,13 @@ const HomeScreen = () => {
     const {userProfile} = userData;
 
     useEffect(() => {
-        dispatch(userProfileAction())
-        dispatch(listPosts());
+        if(!userProfile) dispatch(userProfileAction())
+        if(!posts) dispatch(listPosts());
     }, [dispatch])
     return (
         <>
         <DashboardLayout name="Home" userProfile={userProfile} >
-                <div className="tweet-form-wrapper"><TweetForm /></div>
+                <div className="tweet-form-wrapper"><TweetForm userProfile={userProfile} /></div>
                 {/* latest tweets come here */}
                 {loading ? <h2>loading ...</h2> : error ? <h3>{error}</h3> : (
                     posts && posts.map( item => {
