@@ -36,7 +36,7 @@ const TweetForm = () => {
                      <img className="avatar" src={files[0].preview} /> </div>}
                  <div className="tweet-form-footer">
                      <div>
-                    <div className="file-drop-container" {...getRootProps()}>
+                    <div {...getRootProps()}>
                         <input {...getInputProps()} />
                         <i className="fas fa-image"></i>
                     </div>
