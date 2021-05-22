@@ -2,13 +2,13 @@ const User = require('../models/user.model');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
 const upload = require('../middleware/fileUpload');
+const asyncHandler = require('../middleware/async');
 
 // @desc    Register user
 // @route   POST /api/v1/auth/register
 // @access  Public
 
-exports.register = async (req, res, next) => {
-    try {
+exports.register = asyncHandler(async (req, res, next) => {
         const {username, email, password, firstname, lastname} = req.body;
 
         //Create user
@@ -21,18 +21,13 @@ exports.register = async (req, res, next) => {
         })
 
         sendTokenResponse(user, 200, res);
-   
-    } catch (err) {
-        res.status(400).json({err})
-    }
-}
+})
 
 // @desc    Login user
 // @route   POST /api/v1/auth/login
 // @access  Public
 
-exports.login = async (req, res, next) => {
-    try {
+exports.login = asyncHandler(async (req, res, next) => {
         const {email, password} = req.body;
 
     // Validate email and password
@@ -55,34 +50,24 @@ exports.login = async (req, res, next) => {
     }
 
     sendTokenResponse(user, 200, res);
-   
-    } catch (err) {
-        res.status(400).json({err})
-    }
-}
+})
 
 // @desc    Get current logged in user
 // @route   POST /api/v1/auth/me
 // @access  Private
-exports.getMe = async (req, res, next) => {
-    try {
+exports.getMe = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.user.id);
 
     res.status(200).json({
         success: true,
         data: user
     })
-    } catch(err) {
-        res.status(400).json(err);
-    }
-    
-}
+})
 
 // @desc    Forgot password
 // @route   POST /api/v1/auth/forgotpassword
 // @access  Public
-exports.forgotPassword = async (req, res, next) => {
-    try {
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
     const user = await User.findOne({email: req.body.email});
     
     if(!user) {
@@ -121,18 +106,13 @@ exports.forgotPassword = async (req, res, next) => {
     res.status(200).json({
         success: true,
         data: user
-    })
-    } catch(err) {
-        res.status(400).json(err);
-    }
-    
-}
+    }) 
+})
 
 // @desc    Reset password
 // @route   POST /api/v1/auth/resetpassword/:resettoken
 // @access  Public
-exports.resetPassword = async (req, res, next) => {
-    try {
+exports.resetPassword = asyncHandler(async (req, res, next) => {
         const resetPasswordToken = crypto
         .createHash('sha256')
         .update(req.params.resettoken)
@@ -155,18 +135,12 @@ exports.resetPassword = async (req, res, next) => {
         await user.save();
 
         sendTokenResponse(user, 200, res);
-
-    } catch(err) {
-        res.status(400).json(err);
-    }
-    
-}
+})
 
 // @desc    Update user details
 // @route   PUT /api/v1/auth/updatedetails
 // @access  Private
-exports.updateDetails = async (req, res, next) => {
-    try {
+exports.updateDetails = asyncHandler(async (req, res, next) => {
         const fieldsToUpdate = {
             username: req.body.username,
             address: req.body.address,
@@ -182,16 +156,12 @@ exports.updateDetails = async (req, res, next) => {
         success: true,
         data: user
     })
-    } catch(err) {
-        res.status(400).json(err);
-    }
-}
+})
 
 // @desc    Update password
 // @route   PUT /api/v1/auth/updatepassword
 // @access  Private
-exports.updatePassword = async (req, res, next) => {
-    try {
+exports.updatePassword = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.user.id).select('+password');
     
     // check current password
@@ -203,15 +173,9 @@ exports.updatePassword = async (req, res, next) => {
     await user.save();
 
    sendTokenResponse(user, 200, res);
+})
 
-    } catch(err) {
-        res.status(400).json(err);
-    }
-    
-}
-
-exports.uploadProfilePic = async (req, res) => {
-  try {
+exports.uploadProfilePic = asyncHandler(async (req, res) => {
     // console.log(req.file);
     // if (req.file == undefined) {
     //   return res.status(400).send({ message: "Choose a file to upload" });
@@ -225,24 +189,9 @@ exports.uploadProfilePic = async (req, res) => {
     res.status(200).send({
       message: "File uploaded successfully: " + req.file.originalname,
     });
+});
 
-  } catch (err) {
-    console.log(err);
-
-    if (err.code == "LIMIT_FILE_SIZE") {
-      return res.status(500).send({
-        message: "File size should be less than 5MB",
-      });
-    }
-
-    res.status(500).send({
-      message: `Error occured: ${err}`,
-    });
-  }
-};
-
-exports.uploadCoverPic = async (req, res) => {
-  try {
+exports.uploadCoverPic = asyncHandler(async (req, res) => {
     // console.log(req.file);
     // if (req.file == undefined) {
     //   return res.status(400).send({ message: "Choose a file to upload" });
@@ -256,21 +205,7 @@ exports.uploadCoverPic = async (req, res) => {
     res.status(200).send({
       message: "File uploaded successfully: " + req.file.originalname,
     });
-
-  } catch (err) {
-    console.log(err);
-
-    if (err.code == "LIMIT_FILE_SIZE") {
-      return res.status(500).send({
-        message: "File size should be less than 5MB",
-      });
-    }
-
-    res.status(500).send({
-      message: `Error occured: ${err}`,
-    });
-  }
-};
+});
 
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {

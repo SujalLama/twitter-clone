@@ -11,6 +11,7 @@ import {
     USER_PROFILE_EDIT_REQUEST,
     USER_PROFILE_EDIT_SUCCESS,
     USER_PROFILE_EDIT_FAIL,
+    USER_REGISTER_FAIL,
 } from '../constants/userConstants';
 
 export const userLoginReducer = (state= {}, action) => {
@@ -34,7 +35,7 @@ export const userRegisterReducer = (state= {}, action) => {
             return {loading: true}
         case USER_REGISTER_SUCCESS:
             return {loading: false, userInfo: action.payload}
-        case USER_LOGIN_FAIL:
+        case USER_REGISTER_FAIL:
             return {loading: false, error: action.payload}
         default:
             return state;

@@ -1,6 +1,7 @@
 const express = require('express');
 const cookie = require('cookie-parser');
 const dotenv = require('dotenv').config({path: './config/config.env'});
+const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 const cors = require('cors');
 
@@ -35,6 +36,8 @@ app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/posts', postRoute);
 app.use('/api/v1/', uploadRoutes);
 
+//Error handling
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running in port: ${PORT} in ${process.env.NODE_ENV}`))
