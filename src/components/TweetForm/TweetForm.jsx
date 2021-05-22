@@ -1,12 +1,15 @@
 import React, {useState} from 'react'
 import { useDropzone } from 'react-dropzone';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPost } from '../../actions/postActions';
 import "./tweet-form.css"
 
-const TweetForm = () => {
+const TweetForm = ({setTweetActive, tweetActive}) => {
     const userData = useSelector(state => state.userProfile)
+    const dispatch = useDispatch();
     const {loading, error, userProfile} = userData;
     const [files, setFiles] = useState([])
+    const [text, setText] = useState('');
 
            //for photo upload
     const { getRootProps, getInputProps } = useDropzone({
@@ -21,6 +24,15 @@ const TweetForm = () => {
                 )
             }
             })
+    
+            async function createTweet() {
+                const tweetPhoto = new FormData();
+                await tweetPhoto.append('file', files[0]);
+                dispatch(createPost(text, tweetPhoto));
+                if(tweetActive) setTweetActive(false);
+                setText('');
+                setFiles([]);
+            }
 
     return (
         <div className="tweet-form-container">
@@ -30,7 +42,7 @@ const TweetForm = () => {
             : <img src= "/img/user-placeholder.svg" className="user-pic" alt="profile-pic"/>
             }
             <div className="tweet-content">
-                 <textarea placeholder="What's happening" row="12"/>
+                 <textarea placeholder="What's happening" row="12" value={text} onChange={(e) => setText(e.target.value)} />
                  {files.length > 0 && <div className="avatar-container">
                      <i className="fas fa-times-circle" onClick={() => setFiles([])}></i>
                      <img className="avatar" src={files[0].preview} /> </div>}
@@ -42,7 +54,7 @@ const TweetForm = () => {
                     </div>
                     <i className="fas fa-smile"></i>
                     </div>
-                    <button className="primary-btn">Tweet</button>
+                    <button className="primary-btn" disabled={!text} onClick={() => createTweet()}>Tweet</button>
                 </div>
             </div>
         </div>

@@ -48,7 +48,12 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: 60px;
+    height: 90px;
+    margin-bottom: 4px;
+}
+
+.signup-form-row .form-group:first-child {
+    margin-right: 12px;
 }
 
 .signup-form .form-group {

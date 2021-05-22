@@ -2,7 +2,10 @@ import axios from 'axios';
 import {
     POST_LIST_REQUEST,
     POST_LIST_SUCCESS,
-    POST_LIST_FAIL
+    POST_LIST_FAIL,
+    CREATE_POST_REQUEST,
+    CREATE_POST_SUCCESS,
+    CREATE_POST_FAIL
 } from '../constants/postConstants';
 
 export const listPosts = () => async (dispatch) => {
@@ -18,6 +21,45 @@ export const listPosts = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: POST_LIST_FAIL,
+            payload: err.response && err.response.data.message
+                ? err.response.data.message
+                : err.message
+        })
+    }
+}
+
+export const createPost = (text, tweetPhoto) => async (dispatch) => {
+    try {
+        dispatch({type: CREATE_POST_REQUEST})
+         let {token} = JSON.parse(localStorage.getItem("userInfo"));
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+
+        const {data} = await axios.post('/api/v1/posts', {text}, config);
+
+                    const config2 = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+
+        if (data.data._id) {
+            await axios.put(`/api/v1/posts/${data.data._id}/photo`, tweetPhoto, config2);
+        }
+           
+        dispatch({
+            type: CREATE_POST_SUCCESS,
+            })
+        
+        dispatch(listPosts());
+    } catch (err) {
+        dispatch({
+            type: CREATE_POST_FAIL,
             payload: err.response && err.response.data.message
                 ? err.response.data.message
                 : err.message

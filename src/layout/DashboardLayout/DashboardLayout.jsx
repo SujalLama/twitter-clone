@@ -47,7 +47,7 @@ const DashboardLayout = ({children, name, back}) => {
                 <div className="twitter-modal-wrapper">
                     <i className="fas fa-times" onClick={() => setTweetActive(false)}></i>
                     <div>
-                    <TweetForm />
+                    <TweetForm setTweetActive={setTweetActive} tweetActive={tweetActive} />
                     </div>
                 </div>
                 </div>}
