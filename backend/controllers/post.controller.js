@@ -129,3 +129,36 @@ exports.postPhotoUpload = asyncHandler(async (req, res, next) => {
         message: "File uploaded successfully: " + req.file.originalname,
         });
 })
+
+// @desc    Like post by all user
+// @route   PUT /api/v1/posts/like
+// @access  Public
+
+exports.likePost = asyncHandler(async (req, res, next) => {
+    const {postId, userId} = req.body;
+    // const post = await Post.findById(postId);
+
+        await Post.findByIdAndUpdate(postId, {$addToSet: {likes: [userId]}})
+
+    res.status(200).json({
+        success: true,
+    })
+})
+
+// @desc    Like post by all user
+// @route   PUT /api/v1/posts/comment
+// @access  Public
+
+exports.commentPost = asyncHandler(async (req, res, next) => {
+    const {postId, userId, text} = req.body;
+    // const post = await Post.findById(postId);
+
+        await Post.findByIdAndUpdate(postId, {$addToSet: {comments: [{
+            text,
+            postedBy: userId
+        }]}})
+
+    res.status(200).json({
+        success: true,
+    })
+})
