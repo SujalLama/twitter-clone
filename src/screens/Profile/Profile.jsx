@@ -1,10 +1,11 @@
-import {useState} from 'react'
-import { useSelector } from 'react-redux';
+import {useEffect, useState} from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from '../../components/EditProfile/EditProfile';
 import DashboardLayout from '../../layout/DashboardLayout/DashboardLayout'
 import moment from 'moment';
 
 import './profile.css'
+import { userProfileAction } from '../../actions/userActions';
 
 const Profile = () => {
     const [tweetActive, setTweetActive] = useState(true);
@@ -24,6 +25,11 @@ const Profile = () => {
     //redux data fetching
     const userData = useSelector(state => state.userProfile)
     const {loading, error, userProfile} = userData;
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(!userProfile) dispatch(userProfileAction())
+    }, [dispatch])
 
     return (
         <div className="profile-wrapper">

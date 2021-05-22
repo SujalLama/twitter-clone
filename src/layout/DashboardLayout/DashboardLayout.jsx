@@ -80,7 +80,7 @@ const DashboardLayout = ({children, name, back}) => {
                    <img src= "/img/user-placeholder.svg" className="user-pic" alt="profile-pic"/>
                     <div className="user-detail">
                         <h4>name</h4>
-                        <p>@username"</p>
+                        <p>@username</p>
                     </div>
                     <i className="fas fa-ellipsis-h"></i>
                     </>

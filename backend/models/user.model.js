@@ -45,7 +45,11 @@ const UserSchema = new mongoose.Schema({
     },
     bio: {
         type: String,
-        minlength: 30,
+        maxlength: 30,
+    },
+    address: {
+        type: String,
+        maxlength: 15,
     },
     followers: [{type:mongoose.Schema.ObjectId, ref: 'User'}],
     following: [{type:mongoose.Schema.ObjectId, ref: 'User'}],

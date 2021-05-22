@@ -7,8 +7,7 @@ const EditProfile = ({setEditActive}) => {
     const [namefield, setNameField] = useState('');
     const [biofield, setBioField] = useState('');
     const [locationfield, setLocationField] = useState('');
-    const [websitefield, setWebsiteField] = useState('');
-       const [files, setFiles] = useState([])
+    const [files, setFiles] = useState([])
 
       //redux data fetching
     const userData = useSelector(state => state.userProfile)
@@ -47,30 +46,23 @@ const EditProfile = ({setEditActive}) => {
                                 <input {...getInputProps()} />
                                 <i className="far fa-image"></i>
                             </div>
+                            {files.length > 0 && <i className="fas fa-times upload-close" onClick={() => setFiles([])}></i>}
                         </div>
                          {
-                         userProfile
-                        ? (userProfile.coverPhoto === undefined 
-                        ? <div className="cover-photo"></div>
-                        : <img src={`http://localhost:5000/api/v1/files/${userProfile.coverPhoto}`} className="cover-photo" alt="cover-pic"/>)
-                        : <div className="cover-photo"></div>
+                              files.length > 0
+                                ?   <img className="cover-photo" src={files[0].preview} alt="cover photo in edit" />
+                                :   (userProfile 
+                                    ? (userProfile.coverPhoto !== undefined 
+                                        ? 
+                                        <img src={`http://localhost:5000/api/v1/files/${userProfile.coverPhoto}`}
+                                         className="cover-photo" alt="cover-pic"/>
+                                         : <div className="cover-photo"></div>
+                                         )
+                                    :  <div className="cover-photo"></div>
+                                    )
                         }
                     </div>
-                    <div className="profile-edit">
-                        <div className="profile-pic">
-                            <div className="photo-background user-profile-back">
-                                 <div {...getRootProps()}>
-                                    <input {...getInputProps()} />
-                                    <i className="far fa-image"></i>
-                                 </div>  
-                            </div>
-                            {
-                            userProfile
-                            ? <img src={userProfile.profilePhoto === undefined ? "/img/user-placeholder.svg" : `http://localhost:5000/api/v1/files/${userProfile.profilePhoto}`} className="user-pic" alt="profile-pic"/>
-                            : <img src= "/img/user-placeholder.svg" className="user-pic" alt="profile-pic"/>
-                            }
-                        </div>
-                    </div>
+                   <ProfilePhoto userProfile={userProfile} />
                     </div>
                 </div>
             </div>
@@ -92,6 +84,46 @@ const EditProfile = ({setEditActive}) => {
                 </div>
             </div>
         </form>
+    )
+}
+
+function ProfilePhoto ({userProfile}) {
+    const [files, setFiles] = useState([])
+     const { getRootProps, getInputProps } = useDropzone({
+            accept: "image/*",
+            onDrop: (acceptedFiles) => {
+                setFiles(
+                acceptedFiles.map((file) =>
+                    Object.assign(file, {
+                    preview: URL.createObjectURL(file)
+                    })
+                )
+                )
+            }
+            })
+    return (
+         <div className="profile-edit">
+                        <div className="profile-pic">
+                            <div className="photo-background user-profile-back">
+                                 <div {...getRootProps()}>
+                                    <input {...getInputProps()} />
+                                    <i className="far fa-image"></i>
+                                 </div>
+                                 {files.length > 0 && <i className="fas fa-times upload-close" onClick={() => setFiles([])}></i>}
+                            </div>
+                            {
+                                files.length > 0
+                                ?   <img className="profile-photo-edit" src={files[0].preview} alt="profile photo in edit" />
+                                :   (userProfile 
+                                    ? (userProfile.profilePhoto !== undefined 
+                                        && 
+                                        <img src={`http://localhost:5000/api/v1/files/${userProfile.profilePhoto}`}
+                                         className="profile-photo-edit" alt="profile-pic"/>)
+                                    :  <img src= "/img/user-placeholder.svg" />
+                                    )
+                            }
+                        </div>
+                    </div>
     )
 }
 

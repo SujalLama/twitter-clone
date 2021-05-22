@@ -1,5 +1,5 @@
 import axios from "axios"
-import { USER_LOGIN_FAIL, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_PROFILE_FAIL, USER_PROFILE_REQUEST, USER_PROFILE_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS } from "../constants/userConstants"
+import { USER_LOGIN_FAIL, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_PROFILE_EDIT_FAIL, USER_PROFILE_EDIT_REQUEST, USER_PROFILE_EDIT_SUCCESS, USER_PROFILE_FAIL, USER_PROFILE_REQUEST, USER_PROFILE_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS } from "../constants/userConstants"
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -86,6 +86,33 @@ export const userProfileAction = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: USER_PROFILE_FAIL,
+            payload: err.response && err.response.data.message
+                ? err.response.data.message
+                : err.message
+        })
+    }
+}
+
+export const userProfileEditAction = () => async (dispatch) => {
+    try {
+        dispatch({
+            type: USER_PROFILE_EDIT_REQUEST
+        })
+        let {token} = JSON.parse(localStorage.getItem("userInfo"));
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        const {data} = await axios.get('/api/v1/auth/me', config)
+        dispatch({
+            type: USER_PROFILE_EDIT_SUCCESS,
+            payload: data.data
+        })
+    } catch (err) {
+        dispatch({
+            type: USER_PROFILE_EDIT_FAIL,
             payload: err.response && err.response.data.message
                 ? err.response.data.message
                 : err.message
