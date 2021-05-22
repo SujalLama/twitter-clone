@@ -9,7 +9,7 @@ const asyncHandler = require('../middleware/async')
 // @access  Public
 
 exports.getAllPosts = asyncHandler(async (req, res, next) => {
-    const posts = await Post.find().populate('postedBy');
+    const posts = await Post.find().populate('postedBy').sort({created: -1});
     const total = posts.length;
 
     res.status(200).json({
