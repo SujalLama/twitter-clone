@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { login } from '../../actions/userActions';
 import './login-screen.css'
 
@@ -44,9 +45,9 @@ const LoginScreen = ({history}) => {
                 <button className="primary-btn" disabled={!namefield && !passwordfield}>Log In</button>
 
                  <div className="btn-group-forgot">
-                 <button className="change-button">Forgot Password ?</button> 
-                 {" . "}
-                 <button className="change-button">Sign up for Twitter</button>
+                 {/* <button className="change-button">Forgot Password ?</button> 
+                 {" . "} */}
+                 <Link to="/"><button className="change-button">Sign up for Twitter</button></Link>
                  </div>
                  </div>
              </form>

@@ -93,7 +93,7 @@ export const userProfileAction = () => async (dispatch) => {
     }
 }
 
-export const userProfileEditAction = () => async (dispatch) => {
+export const userProfileEditAction = ((username, bio, address) => async (dispatch) => {
     try {
         dispatch({
             type: USER_PROFILE_EDIT_REQUEST
@@ -105,11 +105,20 @@ export const userProfileEditAction = () => async (dispatch) => {
                 'Authorization': `Bearer ${token}`
             }
         }
-        const {data} = await axios.get('/api/v1/auth/me', config)
+
+        const {data} =  await axios.put('/api/v1/auth/updatedetails',  
+                {
+                username, 
+                address,
+                bio
+                }, config);
+        
+        
         dispatch({
             type: USER_PROFILE_EDIT_SUCCESS,
             payload: data.data
         })
+
     } catch (err) {
         dispatch({
             type: USER_PROFILE_EDIT_FAIL,
@@ -118,4 +127,4 @@ export const userProfileEditAction = () => async (dispatch) => {
                 : err.message
         })
     }
-}
+})
