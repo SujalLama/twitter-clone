@@ -3,14 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from '../../components/EditProfile/EditProfile';
 import DashboardLayout from '../../layout/DashboardLayout/DashboardLayout'
 import moment from 'moment';
+import axios from 'axios';
 
 import './profile.css'
 import { userProfileAction } from '../../actions/userActions';
+import LatestTweet from '../../components/LatestTweet/LatestTweet';
 
 const Profile = () => {
     const [tweetActive, setTweetActive] = useState(true);
     const [likesActive, setLikesActive] = useState(false);
     const [editActive, setEditActive] = useState(false);
+    const [posts, setPosts] = useState();
 
     function tweetFunc () {
         setTweetActive(true);
@@ -26,9 +29,25 @@ const Profile = () => {
     const userData = useSelector(state => state.userProfile)
     const {loading, error, userProfile} = userData;
     const dispatch = useDispatch();
+    
+    async function getYourPosts (id) {
+        tweetFunc()
+        const {data} = await axios.get(`/api/v1/posts?postedBy=${id}`)
+        setPosts(data.data);
+    }
 
+    async function getYourPostsLikes (id) {
+        likesFunc()
+        const {data} = await axios.get(`/api/v1/posts?likes=${id}`)
+        setPosts(data.data);
+    }
+    
     useEffect(() => {
         if(!userProfile) dispatch(userProfileAction())
+        if(userProfile) {
+            getYourPosts(userProfile._id)
+        }
+        
     }, [dispatch])
 
     return (
@@ -112,94 +131,19 @@ const Profile = () => {
            </div>
            <div className="main-nav-container">
            <ul className="main-nav">
-                <li className={tweetActive && "active"} onClick={() => tweetFunc()}>Tweets</li>
-                <li className={likesActive && "active"} onClick={() => likesFunc()}>Likes</li>
+                <li className={tweetActive && "active"} onClick={() => getYourPosts(userProfile._id)}>Tweets</li>
+                <li className={likesActive && "active"} onClick={() => getYourPostsLikes(userProfile._id)}>Likes</li>
            </ul>
            </div>
            {
                tweetActive 
                ? <>
-                <div className="latest-tweet-container">
-                     <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
-                       
-                     <div className="latest-tweet--header-content">
-                            <div>
-                            <h4>Jobs at Fresh Thyme</h4>
-                            <p>@FreshTymeJobs</p> 
-                            <span>{" . "}</span>
-                            <p>1hr</p>
-                            </div>
-                            <div className="tweet-content">
-                                This job is amzing and I love it.
-                            </div>
-                            <div className="tweet-photos">
-                                <img src="/img/space.jpg" className="tweet-photo" alt="tweet-photo"/>
-                            </div>
-                            <div className="tweet-footer">
-                                <div className="tweet-comment">
-                                <i className="far fa-comment-alt" /><span>3</span>
-                                </div>
-                                <div className="tweet-love">
-                                <i className="far fa-heart" /><span>16</span>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-
-                 <div className="latest-tweet-container">
-                     <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
-                       
-                     <div className="latest-tweet--header-content">
-                            <div>
-                            <h4>Jobs at Fresh Thyme</h4>
-                            <p>@FreshTymeJobs</p> 
-                            <span>{" . "}</span>
-                            <p>1hr</p>
-                            </div>
-                            <div className="tweet-content">
-                                This job is amzing and I love it.
-                            </div>
-                            <div className="tweet-photos">
-                                <img src="/img/space.jpg" className="tweet-photo" alt="tweet-photo"/>
-                            </div>
-                            <div className="tweet-footer">
-                                <div className="tweet-comment">
-                                <i className="far fa-comment-alt" /><span>3</span>
-                                </div>
-                                <div className="tweet-love">
-                                <i className="far fa-heart" /><span>16</span>
-                                </div>
-                            </div>
-                    </div>
-                </div>
+                <LatestTweet 
+                data={posts}
+                />
                </>
                : <>
-                <div className="latest-tweet-container">
-                     <img src="/img/author.jpg" className="user-pic" alt="posting author"/>
-                       
-                     <div className="latest-tweet--header-content">
-                            <div>
-                            <h4>Jobs at Fresh Thyme</h4>
-                            <p>@FreshTymeJobs</p> 
-                            <span>{" . "}</span>
-                            <p>1hr</p>
-                            </div>
-                            <div className="tweet-content">
-                                This job is amzing and I love it.
-                            </div>
-                            <div className="tweet-photos">
-                                <img src="/img/space.jpg" className="tweet-photo" alt="tweet-photo"/>
-                            </div>
-                            <div className="tweet-footer">
-                                <div className="tweet-comment">
-                                <i className="far fa-comment-alt" /><span>3</span>
-                                </div>
-                                <div className="tweet-love">
-                                <i className="far fa-heart" /><span>16</span>
-                                </div>
-                            </div>
-                    </div>
-                </div>
+                <LatestTweet data={posts} />
                </>
            }
         </DashboardLayout>
