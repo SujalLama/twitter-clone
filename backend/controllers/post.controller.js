@@ -9,7 +9,7 @@ const asyncHandler = require('../middleware/async')
 // @access  Public
 
 exports.getAllPosts = asyncHandler(async (req, res, next) => {
-    const posts = await Post.find().populate('postedBy').sort({created: -1});
+    const posts = await Post.find(req.query).populate('postedBy').sort({created: -1});
     const total = posts.length;
 
     res.status(200).json({
@@ -136,16 +136,21 @@ exports.postPhotoUpload = asyncHandler(async (req, res, next) => {
 
 exports.likePost = asyncHandler(async (req, res, next) => {
     const {postId, userId} = req.body;
-    // const post = await Post.findById(postId);
+    const post = await Post.findById(postId);
 
+    if(post.likes.includes(userId)) {
+        post.likes.pull(userId);
+        await post.save();
+    } else {
         await Post.findByIdAndUpdate(postId, {$addToSet: {likes: [userId]}})
-
+    }
+        
     res.status(200).json({
         success: true,
     })
 })
 
-// @desc    Like post by all user
+// @desc    comment post by all user
 // @route   PUT /api/v1/posts/comment
 // @access  Public
 

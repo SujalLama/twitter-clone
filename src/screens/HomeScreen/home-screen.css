@@ -67,6 +67,10 @@
     cursor: pointer;
 }
 
+.tweet-love.active {
+    color: red;
+}
+
 .tweet-love i {
     margin-right: .2em;
     padding: 10px;
@@ -83,3 +87,7 @@
     color: lightcoral;
 }
 
+.fa-heart.active {
+    color: red;
+    fill: red;
+}
