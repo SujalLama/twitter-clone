@@ -3,6 +3,8 @@ import { useDispatch} from 'react-redux';
 import moment from 'moment';
 import axios from 'axios';
 
+import './latest-tweet.css';
+
 const LatestTweet = ({
     userProfile,
     commentActive,
@@ -12,14 +14,14 @@ const LatestTweet = ({
     setPostId,
     loading,
     error,
-    data
+    data,
+    name
 }) => {
-    const dispatch = useDispatch()
-    
+
     return (
         <div>
             {loading ? <h2>loading ...</h2> : error ? <h3>{error}</h3> : (
-                    data && data.map( item => {
+                    data ? data.map( item => {
                     return (<div className="latest-tweet-container">
                      <img src={item.postedBy
                      ? (item.postedBy.profilePhoto !== undefined 
@@ -55,6 +57,7 @@ const LatestTweet = ({
                     <i className="fas fa-ellipsis-h setting" ></i>
                 </div>)
                     })
+                : <h4 className="empty-message">You don't have any {name} yet.</h4> 
                 )}
         </div>
     )

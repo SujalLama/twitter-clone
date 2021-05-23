@@ -19,7 +19,7 @@ const HomeScreen = () => {
     
     useEffect(() => {
         if(!userProfile) dispatch(userProfileAction())
-        if(!posts) dispatch(listPosts());
+        dispatch(listPosts());
     }, [dispatch])
 
     return (

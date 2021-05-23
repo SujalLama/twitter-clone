@@ -12,17 +12,28 @@ import LatestTweet from '../../components/LatestTweet/LatestTweet';
 const Profile = () => {
     const [tweetActive, setTweetActive] = useState(true);
     const [likesActive, setLikesActive] = useState(false);
+    const [commentsActive, setCommentsActive] = useState(false);
     const [editActive, setEditActive] = useState(false);
     const [posts, setPosts] = useState();
+    const [likes, setLikes] = useState();
+    const [comments, setComments] = useState();
 
     function tweetFunc () {
         setTweetActive(true);
         setLikesActive(false);
+        setCommentsActive(false);
     }
 
     function likesFunc () {
         setTweetActive(false);
         setLikesActive(true);
+        setCommentsActive(false);
+    }
+
+    function commentsFunc () {
+        setTweetActive(false);
+        setLikesActive(false);
+        setCommentsActive(true);
     }
     
     //redux data fetching
@@ -39,15 +50,20 @@ const Profile = () => {
     async function getYourPostsLikes (id) {
         likesFunc()
         const {data} = await axios.get(`/api/v1/posts?likes=${id}`)
-        setPosts(data.data);
+        setLikes(data.data);
     }
-    
+
+     async function getYourPostsComments (id) {
+        commentsFunc()
+        const {data} = await axios.get(`/api/v1/posts?comment=${id}`)
+        setComments(data.data);
+    }
+     
     useEffect(() => {
         if(!userProfile) dispatch(userProfileAction())
         if(userProfile) {
             getYourPosts(userProfile._id)
         }
-        
     }, [dispatch])
 
     return (
@@ -133,17 +149,29 @@ const Profile = () => {
            <ul className="main-nav">
                 <li className={tweetActive && "active"} onClick={() => getYourPosts(userProfile._id)}>Tweets</li>
                 <li className={likesActive && "active"} onClick={() => getYourPostsLikes(userProfile._id)}>Likes</li>
+                <li className={commentsActive && "active"} onClick={() => getYourPostsComments(userProfile._id)}>Comments</li>
            </ul>
            </div>
            {
                tweetActive 
                ? <>
                 <LatestTweet 
-                data={posts}
+                data={posts.length > 0 ? posts : ''}
+                name="tweets"
+                />
+               </>
+               : likesActive 
+               ? <>
+                <LatestTweet 
+                data={likes.length > 0 ? likes : ''} 
+                name="likes"
                 />
                </>
                : <>
-                <LatestTweet data={posts} />
+                <LatestTweet 
+                data={comments.length > 0 ? comments : ''} 
+                name="comments"
+                />
                </>
            }
         </DashboardLayout>
