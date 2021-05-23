@@ -9,6 +9,16 @@ const asyncHandler = require('../middleware/async')
 // @access  Public
 
 exports.getAllPosts = asyncHandler(async (req, res, next) => {
+
+    if(req.query.comment) {
+        const posts = await Post.find({"comments.postedBy": req.query.comment}).populate('comments.postedBy').sort({created: -1});
+        const total = posts.length;
+        return (  res.status(200).json({
+        success: true,
+        total,
+        data: posts,
+    }))
+    }
     const posts = await Post.find(req.query).populate('postedBy').sort({created: -1});
     const total = posts.length;
 
@@ -25,7 +35,8 @@ exports.getAllPosts = asyncHandler(async (req, res, next) => {
 
 exports.getSinglePost = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const post = await Post.findById(id);
+    const post = await Post.findById(id).populate('postedBy')
+    .populate('comments.postedBy');
 
     if(!post) {
         return next(new ErrorResponse(`Posts not found with id of ${req.params.id}`, 404));
@@ -87,14 +98,14 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 // @access  Private
 
 exports.deletePost = asyncHandler(async (req, res, next) => {
-    const post = await req.findById(req.params.id);
+    const post = await Post.findById(req.params.id);
 
     // Make sure user is post owner
     if(post.postedBy.toString() !== req.user.id) {
         return res.status(401).json({message: 'Not authorized to delete post.'});
     }
 
-    await Post.findByIdAndDelete(req.params.id);
+    await Post.findByIdAndRemove(req.params.id);
     
     res.status(200).json({
         success: true,

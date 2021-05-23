@@ -4,6 +4,9 @@ import moment from 'moment';
 import axios from 'axios';
 
 import './latest-tweet.css';
+import Comment from '../Comment/Comment';
+import { useHistory } from 'react-router';
+import { deletePost } from '../../actions/postActions';
 
 const LatestTweet = ({
     userProfile,
@@ -15,19 +18,18 @@ const LatestTweet = ({
     loading,
     error,
     data,
-    name
+    name,
+    showcomments
 }) => {
-
-    const deletePost = (id) => {
-        setDeleteActive(false);
-    }
-
-const [deleteActive, setDeleteActive] = useState(false);
+    
+    const [settingActive, setSettingActive] = useState(true);
+    
+    const history = useHistory();
     return (
         <div>
             {loading ? <h2>loading ...</h2> : error ? <h3>{error}</h3> : (
-                    data ? data.map( item => {
-                    return (<div className="latest-tweet-container">
+                    data.length > 0 ? data.map( item => {
+                    return (<div className="latest-tweet-container" >
                      <img src={item.postedBy
                      ? (item.postedBy.profilePhoto !== undefined 
                         ? `http://localhost:5000/api/v1/files/${item.postedBy.profilePhoto}`
@@ -35,7 +37,7 @@ const [deleteActive, setDeleteActive] = useState(false);
                         )
                     : "/img/user-placeholder.svg"
                     } className="user-pic" alt="posting author"/>
-                     <div className="latest-tweet--header-content">
+                     <div className="latest-tweet--header-content" onClick={() => history.push(`posts/${item._id}`)}>
                             <div>
                             <h4>{item.postedBy.username}</h4>
                             <p>@{item.postedBy.username}</p> 
@@ -60,12 +62,9 @@ const [deleteActive, setDeleteActive] = useState(false);
                                />
                                 <TweetLove item={item} userProfile={userProfile} />
                             </div>
+                            {item.comments.length > 0 && (showcomments && <Comment data={item.comments} userProfile={userProfile} />)}
                     </div>
-                    {item.postedBy._id === userProfile._id && <div className="setting-container">
-                        <i className="fas fa-ellipsis-h setting" onClick={() => setDeleteActive(!deleteActive)}></i>
-                        {deleteActive && <button onClick={() => deletePost(item._id)}>Delete Post</button>}
-                        </div>
-                        }
+                    <SettingComponent settingActive={settingActive} item={item} />
                 </div>)
                     })
                 : <h4 className="empty-message">You don't have any {name} yet.</h4> 
@@ -74,6 +73,22 @@ const [deleteActive, setDeleteActive] = useState(false);
     )
 }
 
+function SettingComponent ({settingActive, item, history})  {
+    const [deleteActive, setDeleteActive] = useState(false);
+    const dispatch = useDispatch();
+     const deleteAPost = async (id) => {
+         dispatch(deletePost(id))
+        setDeleteActive(false);
+    }
+    return (<>
+        {settingActive && <div className="setting-container">
+            <i className="fas fa-ellipsis-h setting" onClick={() => setDeleteActive(!deleteActive)}></i>
+            {deleteActive && <button onClick={() => deleteAPost(item._id)}>Delete Post</button>}
+            </div>
+        }
+        </>
+    )
+}
 
 function TweetLove ({item, userProfile}) {
     const [likeActive, setLikeActive] = useState(false);

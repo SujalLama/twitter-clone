@@ -60,6 +60,7 @@ const Profile = () => {
      async function getYourPostsComments (id) {
         commentsFunc()
         const {data} = await axios.get(`/api/v1/posts?comment=${id}`)
+        console.log(data);
         setComments(data.data);
     }
      
@@ -205,6 +206,7 @@ const Profile = () => {
                 setCommentModalActive={setCommentModalActive}
                 commentModalActive={commentModalActive}
                 setPostId={setPostId}
+                showcomments="show"
                 />
                </>
            }

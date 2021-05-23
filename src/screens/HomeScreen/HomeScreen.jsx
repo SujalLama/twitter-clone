@@ -11,6 +11,8 @@ const HomeScreen = () => {
     const dispatch = useDispatch()
     const userData = useSelector(state => state.userProfile)
     const {userProfile} = userData;
+    const deletePost = useSelector(state => state.postDelete)
+    const {success} = deletePost;
     const [commentModalActive, setCommentModalActive] = useState(false);
     const [commentActive, setCommentActive] = useState(false);
     const [postId, setPostId] = useState();
@@ -21,7 +23,7 @@ const HomeScreen = () => {
     useEffect(() => {
         if(!userProfile) dispatch(userProfileAction())
         dispatch(listPosts());
-    }, [dispatch])
+    }, [dispatch, success])
 
     return (
         <>

@@ -5,7 +5,10 @@ import {
     POST_LIST_FAIL,
     CREATE_POST_REQUEST,
     CREATE_POST_SUCCESS,
-    CREATE_POST_FAIL
+    CREATE_POST_FAIL,
+    DELETE_POST_FAIL,
+    DELETE_POST_SUCCESS,
+    DELETE_POST_REQUEST
 } from '../constants/postConstants';
 
 export const listPosts = () => async (dispatch) => {
@@ -16,7 +19,7 @@ export const listPosts = () => async (dispatch) => {
 
         dispatch({
             type: POST_LIST_SUCCESS,
-            payload: data
+            payload: data.data
             })
     } catch (err) {
         dispatch({
@@ -60,6 +63,31 @@ export const createPost = (text, tweetPhoto) => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: CREATE_POST_FAIL,
+            payload: err.response && err.response.data.message
+                ? err.response.data.message
+                : err.message
+        })
+    }
+}
+
+export const deletePost = (id) => async (dispatch) => {
+    try {
+        dispatch({type: DELETE_POST_REQUEST})
+         let {token} = JSON.parse(localStorage.getItem("userInfo"));
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        await axios.delete(`/api/v1/posts/${id}`, config)
+        dispatch({
+            type: DELETE_POST_SUCCESS,
+            })
+        
+    } catch (err) {
+        dispatch({
+            type: DELETE_POST_FAIL,
             payload: err.response && err.response.data.message
                 ? err.response.data.message
                 : err.message

@@ -4,7 +4,10 @@ import {
     POST_LIST_FAIL,
     CREATE_POST_REQUEST,
     CREATE_POST_SUCCESS,
-    CREATE_POST_FAIL
+    CREATE_POST_FAIL,
+    DELETE_POST_FAIL,
+    DELETE_POST_SUCCESS,
+    DELETE_POST_REQUEST
 } from '../constants/postConstants';
 
 export const postListReducer = (state= {posts: []}, action) => {
@@ -12,7 +15,7 @@ export const postListReducer = (state= {posts: []}, action) => {
         case POST_LIST_REQUEST:
             return {loading: true, posts: []}
         case POST_LIST_SUCCESS:
-            return {loading: false, posts: action.payload.data}
+            return {loading: false, posts: action.payload}
         case POST_LIST_FAIL:
             return {loading: false, error: action.payload}
         default:
@@ -27,6 +30,19 @@ export const createPostReducer = (state= {post: {}}, action) => {
         case CREATE_POST_SUCCESS:
             return {loading: false}
         case CREATE_POST_FAIL:
+            return {loading: false, error: action.payload}
+        default:
+            return state
+    }
+}
+
+export const deletepostReducer = (state= {}, action) => {
+    switch (action.type) {
+        case DELETE_POST_REQUEST:
+            return {loading: true}
+        case DELETE_POST_SUCCESS:
+            return {loading: false, success: true}
+        case DELETE_POST_FAIL:
             return {loading: false, error: action.payload}
         default:
             return state

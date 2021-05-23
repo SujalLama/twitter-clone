@@ -9,12 +9,12 @@
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
-    /* cursor: pointer; */
+    cursor: pointer;
 }
 
-/* .latest-tweet-container:hover {
+.latest-tweet-container:hover {
     background: rgb(248, 248, 248);
-} */
+}
 
 .latest-tweet--header-content {
     width: 85%;
