@@ -18,6 +18,11 @@ const LatestTweet = ({
     name
 }) => {
 
+    const deletePost = (id) => {
+        setDeleteActive(false);
+    }
+
+const [deleteActive, setDeleteActive] = useState(false);
     return (
         <div>
             {loading ? <h2>loading ...</h2> : error ? <h3>{error}</h3> : (
@@ -40,9 +45,11 @@ const LatestTweet = ({
                             <div className="tweet-content">
                                 {item.text}
                             </div>
-                            <div className="tweet-photos">
+                            {
+                            item.photo && <div className="tweet-photos">
                                 <img src={`http://localhost:5000/api/v1/files/${item.photo}`} className="tweet-photo" alt="tweet-photo"/>
                             </div>
+                            }
                             <div className="tweet-footer">
                                <TweetComment item={item} userProfile={userProfile} 
                                setCommentActive={setCommentActive} 
@@ -54,7 +61,11 @@ const LatestTweet = ({
                                 <TweetLove item={item} userProfile={userProfile} />
                             </div>
                     </div>
-                    <i className="fas fa-ellipsis-h setting" ></i>
+                    {item.postedBy._id === userProfile._id && <div className="setting-container">
+                        <i className="fas fa-ellipsis-h setting" onClick={() => setDeleteActive(!deleteActive)}></i>
+                        {deleteActive && <button onClick={() => deletePost(item._id)}>Delete Post</button>}
+                        </div>
+                        }
                 </div>)
                     })
                 : <h4 className="empty-message">You don't have any {name} yet.</h4> 

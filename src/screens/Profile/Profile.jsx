@@ -8,15 +8,19 @@ import axios from 'axios';
 import './profile.css'
 import { userProfileAction } from '../../actions/userActions';
 import LatestTweet from '../../components/LatestTweet/LatestTweet';
+import TweetForm from '../../components/TweetForm/TweetForm';
 
 const Profile = () => {
     const [tweetActive, setTweetActive] = useState(true);
     const [likesActive, setLikesActive] = useState(false);
     const [commentsActive, setCommentsActive] = useState(false);
     const [editActive, setEditActive] = useState(false);
-    const [posts, setPosts] = useState();
-    const [likes, setLikes] = useState();
-    const [comments, setComments] = useState();
+    const [posts, setPosts] = useState([]);
+    const [likes, setLikes] = useState([]);
+    const [comments, setComments] = useState([]);
+    const [commentModalActive, setCommentModalActive] = useState(false);
+    const [commentActive, setCommentActive] = useState(false);
+    const [postId, setPostId] = useState();
 
     function tweetFunc () {
         setTweetActive(true);
@@ -71,6 +75,18 @@ const Profile = () => {
         {editActive && <div className="edit-form-wrapper">
             <div><EditProfile setEditActive={setEditActive}/></div>
             </div>}
+             {commentModalActive && <div className="twitter-modal-container">
+                <div className="twitter-modal-wrapper">
+                    <i className="fas fa-times" onClick={() => setCommentModalActive(false)}></i>
+                    <div>
+                    <TweetForm postId={postId} btnName="Reply" placeholder="Tweet your reply" 
+                    setTweetActive={setCommentModalActive} 
+                    tweetActive={commentModalActive} 
+                    setCommentActive={setCommentActive}
+                    />
+                    </div>
+                </div>
+                </div>}
         <DashboardLayout name={userProfile 
         ? (userProfile.firstname === undefined 
             ? "name" : userProfile.firstname)
@@ -158,6 +174,12 @@ const Profile = () => {
                 <LatestTweet 
                 data={posts.length > 0 ? posts : ''}
                 name="tweets"
+                userProfile={userProfile}
+                 commentActive={commentActive}
+                setCommentActive={setCommentActive}
+                setCommentModalActive={setCommentModalActive}
+                commentModalActive={commentModalActive}
+                setPostId={setPostId}
                 />
                </>
                : likesActive 
@@ -165,12 +187,24 @@ const Profile = () => {
                 <LatestTweet 
                 data={likes.length > 0 ? likes : ''} 
                 name="likes"
+                userProfile={userProfile}
+                commentActive={commentActive}
+                setCommentActive={setCommentActive}
+                setCommentModalActive={setCommentModalActive}
+                commentModalActive={commentModalActive}
+                setPostId={setPostId}
                 />
                </>
                : <>
                 <LatestTweet 
                 data={comments.length > 0 ? comments : ''} 
                 name="comments"
+                userProfile={userProfile}
+                commentActive={commentActive}
+                setCommentActive={setCommentActive}
+                setCommentModalActive={setCommentModalActive}
+                commentModalActive={commentModalActive}
+                setPostId={setPostId}
                 />
                </>
            }

@@ -2,3 +2,25 @@
     text-align: center;
     margin-top: 40px;
 }
+
+.setting-container {
+    position: relative;
+}
+
+.setting-container button {
+    position: absolute;
+    outline: none;
+    border: .5px solid #f1f1f1;
+    border-radius: 4px;
+    background: #fff;
+    width: 100px;
+    height: 40px;
+    color: lightcoral;
+    left: -50px;
+    box-shadow: -1px -1px 8px #bbb;
+    cursor: pointer;
+}
+
+.setting-container button:hover {
+    background: #f1f1f1;
+}

@@ -13,9 +13,10 @@ const HomeScreen = () => {
     const {userProfile} = userData;
     const [commentModalActive, setCommentModalActive] = useState(false);
     const [commentActive, setCommentActive] = useState(false);
+    const [postId, setPostId] = useState();
     const postList = useSelector(state => state.postList)
     const {loading, error, posts} = postList;
-    const [postId, setPostId] = useState();
+    
     
     useEffect(() => {
         if(!userProfile) dispatch(userProfileAction())
