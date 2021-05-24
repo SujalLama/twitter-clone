@@ -249,3 +249,16 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
         data: users,
         }))
 })
+
+// @desc    Get single user
+// @route   GET /api/v1/auth/users/:id
+// @access  Public
+
+exports.getSingleUser = asyncHandler(async (req, res, next) => {   
+
+        const user = await User.findById(req.params.id);
+        return (  res.status(200).json({
+        success: true,
+        data: user,
+        }))
+})

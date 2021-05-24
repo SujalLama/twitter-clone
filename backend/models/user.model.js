@@ -53,6 +53,7 @@ const UserSchema = new mongoose.Schema({
     },
     followers: [{type:mongoose.Schema.ObjectId, ref: 'User'}],
     following: [{type:mongoose.Schema.ObjectId, ref: 'User'}],
+    posts: [{type: mongoose.Schema.ObjectId, ref: 'Post'}],
     resetPasswordToken: String,
     resetPasswordExpire: Date,
     created: {
