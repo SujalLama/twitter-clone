@@ -17,6 +17,7 @@ import './dashboard-layout.css';
 const DashboardLayout = ({children, name, back}) => {
     const [tweetActive, setTweetActive] = useState(false);
     const [logoutActive, setLogoutActive] = useState(false);
+    const [users, setUsers] = useState([]);
     const history = useHistory();
 
     //redux data fetching
@@ -95,7 +96,10 @@ const DashboardLayout = ({children, name, back}) => {
             </main>
 
             <section className="sidebar">
-               <SearchComponent />
+               <SearchComponent setUsers={setUsers} />
+               {
+                   users.length > 0 && users.map(item => <div>{item.username}</div>)
+               }
                 <div className="trends-container">
                     <h4>Trends for you</h4>
                     <div className="latest-trends">

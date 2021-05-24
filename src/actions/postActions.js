@@ -31,7 +31,7 @@ export const listPosts = () => async (dispatch) => {
     }
 }
 
-export const createPost = (text, tweetPhoto) => async (dispatch) => {
+export const createPost = (text, tweetPic) => async (dispatch) => {
     try {
         dispatch({type: CREATE_POST_REQUEST})
          let {token} = JSON.parse(localStorage.getItem("userInfo"));
@@ -43,23 +43,28 @@ export const createPost = (text, tweetPhoto) => async (dispatch) => {
         }
 
         const {data} = await axios.post('/api/v1/posts', {text}, config);
-
+        
                     const config2 = {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${token}`
                     }
                 }
-
-        if (data.data._id) {
+        
+        if(tweetPic && data.data._id) {
+             const tweetPhoto = new FormData();
+            await tweetPhoto.append('file', tweetPic);
             await axios.put(`/api/v1/posts/${data.data._id}/photo`, tweetPhoto, config2);
+             dispatch({
+            type: CREATE_POST_SUCCESS,
+            })
+            return
         }
-           
+
         dispatch({
             type: CREATE_POST_SUCCESS,
             })
-        
-        dispatch(listPosts());
+
     } catch (err) {
         dispatch({
             type: CREATE_POST_FAIL,

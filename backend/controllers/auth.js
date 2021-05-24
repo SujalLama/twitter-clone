@@ -230,3 +230,22 @@ const sendTokenResponse = (user, statusCode, res) => {
         });
 
 }
+
+// @desc    Get all users
+// @route   GET /api/v1/auth/users
+// @access  Public
+
+exports.getAllUsers = asyncHandler(async (req, res, next) => {
+        const keyword = req.query.keyword ? {
+            username: {
+                $regex: req.query.keyword,
+                $options: 'i' //case insensitive
+            }
+        } : {}
+    
+        const users = await User.find({...keyword});
+        return (  res.status(200).json({
+        success: true,
+        data: users,
+        }))
+})

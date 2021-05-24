@@ -27,9 +27,8 @@ const TweetForm = ({setTweetActive, tweetActive, btnName, placeholder, postId, s
             })
     
             async function createTweet() {
-                const tweetPhoto = new FormData();
-                await tweetPhoto.append('file', files[0]);
-                dispatch(createPost(text, tweetPhoto));
+               
+                dispatch(createPost(text, files[0]));
                 if(tweetActive) setTweetActive(false);
                 setText('');
                 setFiles([]);
