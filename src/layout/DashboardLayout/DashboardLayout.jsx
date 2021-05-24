@@ -97,9 +97,19 @@ const DashboardLayout = ({children, name, back}) => {
 
             <section className="sidebar">
                <SearchComponent setUsers={setUsers} />
+              
                {
-                   users.length > 0 && users.map(item => <div>{item.username}</div>)
+                   users.length > 0 &&  <div className="search-user-container">{
+                        users.map(item => <div>
+                       <img src={item.profilePhoto === undefined ? "/img/user-placeholder.svg" : `http://localhost:5000/api/v1/files/${userProfile.profilePhoto}`} className="user-pic" alt="profile-pic"/>
+                       <div className="user-detail">
+                        <h4>{item.firstname === undefined ? "name" : item.firstname}</h4>
+                        <p>@{item.username === undefined ? "username" : item.username}</p>
+                        </div>
+                       </div>)}
+                        </div>
                }
+              
                 <div className="trends-container">
                     <h4>Trends for you</h4>
                     <div className="latest-trends">

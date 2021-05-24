@@ -7,6 +7,7 @@ const SearchComponent = ({setUsers}) => {
 
     async function searchUsers () {
         const {data} = await axios.get(`/api/v1/auth/users?keyword=${keyword}`)
+        console.log(data.data);
         setUsers(data.data);
     }
     useEffect(() => {
