@@ -7,7 +7,7 @@ import FixedHeader from '../../components/FixedHeader/FixedHeader';
 import Logout from '../../components/Logout/Logout';
 import SearchComponent from '../../components/SearchComponent/SearchComponent';
 import TweetForm from '../../components/TweetForm/TweetForm';
-import { userProfileAction } from '../../actions/userActions';
+
 
 // styling
 import './dashboard-layout.css';
@@ -100,7 +100,7 @@ const DashboardLayout = ({children, name, back}) => {
               
                {
                    users.length > 0 &&  <div className="search-user-container">{
-                        users.map(item => <div>
+                        users.map(item => <div onClick={() => history.push(`/users/${item._id}`)}>
                        <img src={item.profilePhoto === undefined ? "/img/user-placeholder.svg" : `http://localhost:5000/api/v1/files/${userProfile.profilePhoto}`} className="user-pic" alt="profile-pic"/>
                        <div className="user-detail">
                         <h4>{item.firstname === undefined ? "name" : item.firstname}</h4>

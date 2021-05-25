@@ -12,6 +12,7 @@ import Notification from './screens/Notification/Notification';
 import PrivateRoute from './ProtectedRoute';
 import Page404 from './screens/Page404/Page404';
 import SinglePost from './screens/SinglePost/SinglePost';
+import UserProfile from './screens/UserProfile/UserProfile';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route exact path="/" component={FirstScreen} />
         <Route path="/login" component={LoginScreen} />
         <Route path="/posts/:id" component={SinglePost} />
+        <Route path="/users/:id" component={UserProfile} />
         <PrivateRoute path="/home">
             <HomeScreen />
           </PrivateRoute>

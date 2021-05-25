@@ -37,18 +37,19 @@ const LatestTweet = ({
                         )
                     : "/img/user-placeholder.svg"
                     } className="user-pic" alt="posting author"/>
-                     <div className="latest-tweet--header-content" onClick={() => history.push(`posts/${item._id}`)}>
+                     <div className="latest-tweet--header-content">
                             <div>
-                            <h4>{item.postedBy.username}</h4>
+                            <h4 className="username" onClick={() => history.push(`/users/${item.postedBy._id}`)}>{item.postedBy.username}</h4>
                             <p>@{item.postedBy.username}</p> 
                             <span>{" . "}</span>
                             <p>{moment(item.created).fromNow()}</p>
                             </div>
-                            <div className="tweet-content">
+                            
+                            <div className="tweet-content" onClick={() => history.push(`/posts/${item._id}`)}>
                                 {item.text}
                             </div>
                             {
-                            item.photo && <div className="tweet-photos">
+                            item.photo && <div className="tweet-photos" onClick={() => history.push(`posts/${item._id}`)}>
                                 <img src={`http://localhost:5000/api/v1/files/${item.photo}`} className="tweet-photo" alt="tweet-photo"/>
                             </div>
                             }

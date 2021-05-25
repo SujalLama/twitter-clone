@@ -24,3 +24,11 @@
 .setting-container button:hover {
     background: #f1f1f1;
 }
+
+.username {
+    cursor: pointer;
+}
+
+.username:hover {
+    color: var(--primary-color);
+}
