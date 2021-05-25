@@ -19,7 +19,8 @@ const LatestTweet = ({
     error,
     data,
     name,
-    showcomments
+    showcomments,
+    lastTweetElementRef
 }) => {
     
     const [settingActive, setSettingActive] = useState(true);
@@ -28,8 +29,48 @@ const LatestTweet = ({
     return (
         <div>
             {loading ? <h2>loading ...</h2> : error ? <h3>{error}</h3> : (
-                    data.length > 0 ? data.map( item => {
-                    return (<div className="latest-tweet-container" >
+                    data.length > 0 ? data.map( (item, index) => {
+                        if(data.length === index + 1) {
+                            return (<div className="latest-tweet-container" ref={lastTweetElementRef}>
+                     <img src={item.postedBy
+                     ? (item.postedBy.profilePhoto !== undefined 
+                        ? `http://localhost:5000/api/v1/files/${item.postedBy.profilePhoto}`
+                        : "/img/user-placeholder.svg"
+                        )
+                    : "/img/user-placeholder.svg"
+                    } className="user-pic" alt="posting author"/>
+                     <div className="latest-tweet--header-content">
+                            <div>
+                            <h4 className="username" onClick={() => history.push(`/users/${item.postedBy._id}`)}>{item.postedBy.username}</h4>
+                            <p>@{item.postedBy.username}</p> 
+                            <span>{" . "}</span>
+                            <p>{moment(item.created).fromNow()}</p>
+                            </div>
+                            
+                            <div className="tweet-content" onClick={() => history.push(`/posts/${item._id}`)}>
+                                {item.text}
+                            </div>
+                            {
+                            item.photo && <div className="tweet-photos" onClick={() => history.push(`posts/${item._id}`)}>
+                                <img src={`http://localhost:5000/api/v1/files/${item.photo}`} className="tweet-photo" alt="tweet-photo"/>
+                            </div>
+                            }
+                            <div className="tweet-footer">
+                               <TweetComment item={item} userProfile={userProfile} 
+                               setCommentActive={setCommentActive} 
+                               commentActive={commentActive} 
+                               setPostId={setPostId}
+                               commentModalActive={commentModalActive}
+                               setCommentModalActive={setCommentModalActive}
+                               />
+                                <TweetLove item={item} userProfile={userProfile} />
+                            </div>
+                            {item.comments.length > 0 && (showcomments && <Comment data={item.comments} userProfile={userProfile} />)}
+                    </div>
+                    <SettingComponent settingActive={settingActive} item={item} />
+                </div>)        
+                        } else {
+                                 return (<div className="latest-tweet-container">
                      <img src={item.postedBy
                      ? (item.postedBy.profilePhoto !== undefined 
                         ? `http://localhost:5000/api/v1/files/${item.postedBy.profilePhoto}`
@@ -67,6 +108,8 @@ const LatestTweet = ({
                     </div>
                     <SettingComponent settingActive={settingActive} item={item} />
                 </div>)
+                        }
+                    
                     })
                 : <h4 className="empty-message">You don't have any {name} yet.</h4> 
                 )}

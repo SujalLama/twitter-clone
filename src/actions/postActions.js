@@ -11,12 +11,11 @@ import {
     DELETE_POST_REQUEST
 } from '../constants/postConstants';
 
-export const listPosts = () => async (dispatch) => {
+export const listPosts = (pageNumber) => async (dispatch) => {
     try {
         dispatch({type: POST_LIST_REQUEST})
 
-        const {data} = await axios.get('/api/v1/posts')
-
+        const {data} = await axios.get(`/api/v1/posts?pageNumber=${pageNumber}`)
         dispatch({
             type: POST_LIST_SUCCESS,
             payload: data.data
