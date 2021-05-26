@@ -10,10 +10,9 @@ const mongoose = require('mongoose');
 // @access  Public
 
 exports.getAllPosts = asyncHandler(async (req, res, next) => {
-    const pageSize = 5;
+    const pageSize = 10;
     const page = Number(req.query.pageNumber) || 1;
-    console.log(page);
-
+    
     if(req.query.comment) {
         const posts = await Post.find({"comments.postedBy": req.query.comment}).populate('comments.postedBy').sort({created: -1});
         const total = posts.length;
@@ -26,9 +25,8 @@ exports.getAllPosts = asyncHandler(async (req, res, next) => {
 
     if(req.query.pageNumber) {
         const count = await Post.count({})
-         const posts = await Post.find().populate('postedBy').sort({created: -1}).limit(pageSize).skip(pageSize * (page - 1));
+        const posts = await Post.find().populate('postedBy').sort({created: -1}).limit(pageSize).skip(pageSize * (page - 1));
         const total = posts.length;
-        console.log(posts);
         res.status(200).json({
             success: true,
             total,
@@ -39,7 +37,6 @@ exports.getAllPosts = asyncHandler(async (req, res, next) => {
     
     const posts = await Post.find(req.query).populate('postedBy').sort({created: -1}).limit(pageSize).skip(pageSize * (page - 1));
     const total = posts.length;
-    console.log(posts);
     res.status(200).json({
         success: true,
         total,

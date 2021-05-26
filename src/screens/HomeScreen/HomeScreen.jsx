@@ -20,9 +20,10 @@ const HomeScreen = () => {
     const [postId, setPostId] = useState();
     const postList = useSelector(state => state.postList)
     const {loading, error, posts, pages, page} = postList;
-    const [hasMore, setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(false);
     const [pageNumber, setPageNumber] = useState(1);
     const [newPosts, setNewPosts] = useState([]);
+    // const lastTweetElementRef = useRef();
     const observer = useRef();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const lastTweetElementRef = useCallback(node => {
@@ -35,17 +36,16 @@ const HomeScreen = () => {
         })
         if(node) observer.current.observe(node);
     }, [loading, hasMore]);
-    // setHasMore(posts.length > 0);
+  
     useEffect(() => {
         if(!userProfile) dispatch(userProfileAction())
         dispatch(listPosts(pageNumber));
-        setNewPosts(prevPost => [...prevPost, ...posts]);
-        console.log(newPosts);
-        // if(newPosts.length < (pages * 5) ) {
-        //     setHasMore(false);
-        // }
+        setHasMore( pageNumber === pages ? false : true);
     }, [dispatch, deleteSuccess, createSuccess, pageNumber])
 
+    useEffect (() => {
+        setNewPosts(existingpost => [...new Set([...existingpost, ...posts])]);
+    }, [posts])
     return (
         <>
         {commentModalActive && <div className="twitter-modal-container">
